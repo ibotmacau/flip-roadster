@@ -61,9 +61,9 @@
       reasonFall: "掉出地圖",
       cars: {
         cybercab: { name: "無人計程車", blurb: "香檳金 · 兩座無方向盤" },
-        model3: { name: "特斯拉 3", blurb: "低趴轎跑 · 更快" },
-        modely: { name: "特斯拉 Y", blurb: "跨界休旅 · 空氣多" },
-        models: { name: "特斯拉 S", blurb: "豪華長軸 · 流暢" }
+        model3: { name: "特斯拉 3", blurb: "低趴轎跑 · 短頭窄燈" },
+        modely: { name: "特斯拉 Y", blurb: "跨界休旅 · 大窗翹尾" },
+        models: { name: "特斯拉 S", blurb: "長軸豪華轎跑" }
       },
       marbles: "波子",
       marbleBonus: "收集波子",
@@ -128,9 +128,9 @@
       reasonFall: "Fell off the map",
       cars: {
         cybercab: { name: "Cybercab", blurb: "Champagne · two-seat robotaxi" },
-        model3: { name: "Model 3", blurb: "Low sedan · quicker" },
-        modely: { name: "Model Y", blurb: "Crossover · more air" },
-        models: { name: "Model S", blurb: "Long luxury · smooth" }
+        model3: { name: "Model 3", blurb: "Low coupe · short nose, slim lamps" },
+        modely: { name: "Model Y", blurb: "Crossover · big glass, kicked rear" },
+        models: { name: "Model S", blurb: "Long luxury sedan" }
       },
       marbles: "Marbles",
       marbleBonus: "Marble!",
@@ -1686,21 +1686,64 @@
     updateHUD();
   }
 
+  // Picker order must match CARS key insertion order
+  const CAR_PICKER_IDS = ["cybercab", "model3", "modely", "models"];
+
+  function paintCarPreview(canvas, car) {
+    const ctx2 = canvas.getContext("2d");
+    if (!ctx2) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = 168;
+    const h = 78;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2.clearRect(0, 0, w, h);
+    // soft pad background
+    const bg = ctx2.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, "#f3f4f6");
+    bg.addColorStop(1, "#e5e7eb");
+    ctx2.fillStyle = bg;
+    ctx2.fillRect(0, 0, w, h);
+    // ground line
+    ctx2.strokeStyle = "rgba(0,0,0,0.12)";
+    ctx2.lineWidth = 1;
+    ctx2.beginPath();
+    ctx2.moveTo(8, h * 0.78);
+    ctx2.lineTo(w - 8, h * 0.78);
+    ctx2.stroke();
+    ctx2.save();
+    ctx2.translate(w * 0.5, h * 0.58);
+    // same silhouette code as in-game side view
+    drawCarBody(ctx2, car, 3.55);
+    ctx2.restore();
+  }
+
   function renderCarGrid() {
     const grid = $("carGrid");
     grid.innerHTML = "";
     const s = t();
-    Object.keys(CARS).forEach(function (id) {
+    CAR_PICKER_IDS.forEach(function (id) {
       const car = CARS[id];
+      if (!car || !s.cars[id]) return;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "car-card";
       btn.setAttribute("role", "option");
       btn.setAttribute("aria-pressed", id === selectedCarId ? "true" : "false");
-      btn.innerHTML =
-        '<div class="car-swatch" style="background:' + car.color + ";border:1px solid " + car.accent + '"></div>' +
-        "<strong>" + s.cars[id].name + "</strong>" +
-        "<small>" + s.cars[id].blurb + "</small>";
+      btn.setAttribute("data-car-id", id);
+      const canvas = document.createElement("canvas");
+      canvas.className = "car-preview";
+      canvas.setAttribute("aria-hidden", "true");
+      const strong = document.createElement("strong");
+      strong.textContent = s.cars[id].name;
+      const small = document.createElement("small");
+      small.textContent = s.cars[id].blurb;
+      btn.appendChild(canvas);
+      btn.appendChild(strong);
+      btn.appendChild(small);
       btn.addEventListener("click", function () {
         selectedCarId = id;
         renderCarGrid();
@@ -1708,6 +1751,7 @@
         beep(600, 0.05, "sine");
       });
       grid.appendChild(btn);
+      paintCarPreview(canvas, car);
     });
   }
 
