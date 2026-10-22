@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e8e8e8" />
+  <meta name="description" content="Flip Roadster — climb the wall, stick, roll, land. Free browser stunt game." />
+  <title>翻滾敞篷｜免費瀏覽器遊戲</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link visually-hidden" href="#main">Skip to game</a>
+
+  <div class="app">
+    <header class="header">
+      <button type="button" class="icon-btn" id="btnMenu" aria-label="Menu" aria-expanded="false" aria-controls="menuOverlay">
+        ☰
+      </button>
+      <h1 class="title" id="pageTitle">
+        <span class="title-dot" aria-hidden="true"></span>
+        <span id="titleText">翻滾敞篷</span>
+      </h1>
+      <div class="header-right">
+        <button type="button" class="icon-btn" id="btnMute" aria-label="Mute" aria-pressed="false" title="Sound">
+          🔊
+        </button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-btn" id="langTW" aria-pressed="true" lang="zh-Hant">繁</button>
+          <button type="button" class="lang-btn" id="langEN" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="stage-wrap" tabindex="-1">
+      <div class="stage" id="stage">
+        <canvas id="game" width="390" height="700" aria-label="Game canvas"></canvas>
+
+        <div class="hud" aria-live="polite">
+          <div class="hud-tl">
+            <p class="car-name" id="hudCarName">敞篷跑車</p>
+            <div class="air-row">
+              <span id="lblAir">空氣</span>
+              <div class="air-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="airBar">
+                <div class="air-fill" id="airFill"></div>
+              </div>
+              <span class="air-val" id="airVal">100</span>
+            </div>
+            <p class="speed-line"><span id="lblSpeed">時速</span><strong id="hudSpeed">0</strong> km/h</p>
+          </div>
+          <div class="hud-tr">
+            <div class="stat-pill"><span class="label" id="lblHeight">高度</span><span id="hudHeight">0.0</span> m</div>
+            <div class="stat-pill"><span class="label" id="lblDist">距離</span><span id="hudDist">0</span> m</div>
+            <div class="stat-pill"><span class="label" id="lblRolls">旋轉</span><span id="hudRolls">0</span></div>
+          </div>
+        </div>
+
+        <div class="banner" id="banner" role="status"></div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Game controls">
+        <button type="button" class="ctrl-btn btn-stick" id="btnStick" data-action="stick" aria-pressed="false">
+          <span class="lbl" id="lblStick">吸附</span>
+          <span class="key">X</span>
+        </button>
+        <button type="button" class="ctrl-btn btn-left" id="btnLeft" data-action="left" aria-pressed="false">
+          <span class="lbl" id="lblLeft">左推進</span>
+          <span class="key">←</span>
+        </button>
+        <button type="button" class="ctrl-btn btn-right" id="btnRight" data-action="right" aria-pressed="false">
+          <span class="lbl" id="lblRight">右推進</span>
+          <span class="key">→</span>
+        </button>
+        <button type="button" class="ctrl-btn btn-drive" id="btnDrive" data-action="drive" aria-pressed="false">
+          <span class="lbl" id="lblDrive">前進</span>
+          <span class="key">Space</span>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Start / How-to -->
+  <div class="overlay" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+    <div class="modal">
+      <h2 id="startTitle">翻滾敞篷</h2>
+      <ol class="howto-list" id="howtoList">
+        <li></li><li></li><li></li><li></li>
+      </ol>
+      <button type="button" class="primary-btn secondary" id="btnPickCarFromStart">選擇車輛</button>
+      <button type="button" class="primary-btn" id="btnStart">開始</button>
+    </div>
+  </div>
+
+  <!-- Car picker -->
+  <div class="overlay" id="carOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="carTitle">
+    <div class="modal">
+      <h2 id="carTitle">選擇車輛</h2>
+      <div class="car-grid" id="carGrid" role="listbox" aria-label="Cars"></div>
+      <button type="button" class="primary-btn" id="btnConfirmCar">確定</button>
+    </div>
+  </div>
+
+  <!-- Hamburger menu -->
+  <div class="overlay" id="menuOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="menuTitle">
+    <div class="modal">
+      <h2 id="menuTitle">選單</h2>
+      <div class="menu-list">
+        <button type="button" class="menu-item" id="menuHowto">操作說明</button>
+        <button type="button" class="menu-item" id="menuCars">選擇車輛</button>
+        <button type="button" class="menu-item" id="menuReset">重新開始</button>
+        <button type="button" class="menu-item" id="menuClose">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="overlay" id="resultOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+    <div class="modal">
+      <h2 id="resultTitle">着地成功!!</h2>
+      <p id="resultBody" style="text-align:center;line-height:1.5;margin:0 0 12px;font-size:14px;"></p>
+      <button type="button" class="primary-btn" id="btnRetry">再來一次</button>
+      <button type="button" class="primary-btn secondary" id="btnResultCars">換車</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
