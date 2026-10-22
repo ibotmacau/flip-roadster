@@ -12,9 +12,10 @@ Infinite side-view stunt runner: climb the launch wall, stick the lip, flip in t
 - Opening launch track: **flat → wall climb → reverse lip → night sky**
 - AIR / energy tank: Lift + Stick + Flip spend air; regenerates idle (faster on ground)
 - Ground obstacles (pillars, barriers, walls) and air obstacles (blocks, beams)
-- Scoring: distance + survival time + **+500 per full aerial flip (2π)**
+- Scoring: distance + survival time + **+500 per full aerial flip (2π)** + marble collect / mission bonus
 - Wheels-down landing continues the run — crash only on obstacles / severe roll / fall-off
-- Car picker (4 cars) · 繁｜EN · mute · menu
+- Car picker: **Cybercab · 特斯拉 3 · 特斯拉 Y · 特斯拉 S** (side-view silhouettes) · 繁｜EN · mute · menu
+- Marble mission: denser trails, HUD goal **n/10**, +300 bonus at 10, highlighted on results
 
 ## Controls
 

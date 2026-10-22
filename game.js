@@ -40,7 +40,7 @@
         "飛出後係夜空星星場景畀你翻滾；吸附只係牆面機械，同星空無關。空中完整 1 圈（2π）+500。",
         "升／吸／翻耗氣；唔用掣會回充，地面更快。空氣空咗就升唔起、吸唔住。",
         "平面落地（輪胎朝下）可繼續開。只喺撞障礙、嚴重翻車、掉出地圖先 Game Over。",
-        "沿途／空中有彩色玻璃波子：撞到即收集得分（唔會死），飛高啲更容易撿。"
+        "沿途有彩色玻璃波子路線：撞到即收集得分（唔會死）。本局目標收集 10 粒有任務獎勵；結果畫面會顯示波子分。"
       ],
       tipLift: "按住「升」升起避開地面障礙！",
       tipStick: "牆上／反翹按住「吸」唔好鬆！",
@@ -61,14 +61,18 @@
       reasonFall: "掉出地圖",
       cars: {
         cybercab: { name: "無人計程車", blurb: "香檳金 · 兩座無方向盤" },
-        suv: { name: "越野休旅", blurb: "較重 · 空氣多" },
-        sports: { name: "超跑", blurb: "更快 · 較耗氣" },
-        kei: { name: "輕自動車", blurb: "輕巧 · 好翻滾" }
+        model3: { name: "特斯拉 3", blurb: "低趴轎跑 · 更快" },
+        modely: { name: "特斯拉 Y", blurb: "跨界休旅 · 空氣多" },
+        models: { name: "特斯拉 S", blurb: "豪華長軸 · 流暢" }
       },
       marbles: "波子",
       marbleBonus: "收集波子",
       marbleScore: "波子分",
-      tipMarble: "飛高／夾縫收集彩色波子得分！"
+      marbleMission: "波子任務",
+      marbleMissionGoal: "目標",
+      marbleMissionDone: "波子任務完成！",
+      marbleMissionBonus: "任務獎勵",
+      tipMarble: "沿波子路線飛高收集！目標 10 粒有 bonus！"
     },
     en: {
       htmlLang: "en",
@@ -103,7 +107,7 @@
         "After launch you're in a starry night sky for flipping — Stick is wall adhesion only, unrelated to the stars. Full aerial flip (2π) → +500.",
         "Lift, Stick & Flip burn air. Air refills when idle, faster on the ground. Empty air = no lift / no stick.",
         "Wheels-down landings continue the run. Only obstacle hits, severe rollovers, or falling off the map end the game.",
-        "Colorful glass marbles float along the route — touch to collect score (never lethal). Fly higher to grab more."
+        "Glass marbles form collectible trails — touch for score (never lethal). Grab 10 in a run for a mission bonus; results highlight marble score."
       ],
       tipLift: "Hold Lift to rise over ground hazards!",
       tipStick: "Hold Stick on the wall / lip — don't let go!",
@@ -124,14 +128,18 @@
       reasonFall: "Fell off the map",
       cars: {
         cybercab: { name: "Cybercab", blurb: "Champagne · two-seat robotaxi" },
-        suv: { name: "SUV", blurb: "Heavy · more air" },
-        sports: { name: "Sports", blurb: "Faster · thirstier" },
-        kei: { name: "Kei car", blurb: "Light · more roll" }
+        model3: { name: "Model 3", blurb: "Low sedan · quicker" },
+        modely: { name: "Model Y", blurb: "Crossover · more air" },
+        models: { name: "Model S", blurb: "Long luxury · smooth" }
       },
       marbles: "Marbles",
       marbleBonus: "Marble!",
       marbleScore: "Marble score",
-      tipMarble: "Grab floating glass marbles for bonus points!"
+      marbleMission: "Marble mission",
+      marbleMissionGoal: "Goal",
+      marbleMissionDone: "Marble mission complete!",
+      marbleMissionBonus: "Mission bonus",
+      tipMarble: "Follow the marble trail! Collect 10 for a bonus!"
     }
   };
 
@@ -144,26 +152,26 @@
       roofThrust: 21, torque: 8.8, drag: 0.28, body: "cybercab",
       regenGround: 23, regenAir: 8
     },
-    suv: {
-      id: "suv", color: "#3d5c4a", accent: "#1a2e22",
-      mass: 1.35, accel: 22, maxSpeed: 40, lift: 34,
-      airCostLift: 14, airCostStick: 12, airCostFlip: 10, airMax: 130,
-      roofThrust: 18, torque: 7.0, drag: 0.42, body: "suv",
-      regenGround: 26, regenAir: 9
+    model3: {
+      id: "model3", color: "#e5e7eb", accent: "#1f2937",
+      mass: 0.95, accel: 35, maxSpeed: 56, lift: 41,
+      airCostLift: 20, airCostStick: 17, airCostFlip: 13, airMax: 90,
+      roofThrust: 23, torque: 9.0, drag: 0.25, body: "model3",
+      regenGround: 19, regenAir: 6.5
     },
-    sports: {
-      id: "sports", color: "#d64545", accent: "#2a1010",
-      mass: 0.9, accel: 36, maxSpeed: 58, lift: 42,
-      airCostLift: 22, airCostStick: 18, airCostFlip: 14, airMax: 85,
-      roofThrust: 24, torque: 9.2, drag: 0.26, body: "sports",
-      regenGround: 18, regenAir: 6
+    modely: {
+      id: "modely", color: "#1e3a5f", accent: "#0f172a",
+      mass: 1.25, accel: 24, maxSpeed: 44, lift: 36,
+      airCostLift: 15, airCostStick: 13, airCostFlip: 10, airMax: 125,
+      roofThrust: 19, torque: 7.4, drag: 0.38, body: "modely",
+      regenGround: 25, regenAir: 8.5
     },
-    kei: {
-      id: "kei", color: "#f0e6a8", accent: "#5a5030",
-      mass: 0.7, accel: 26, maxSpeed: 42, lift: 44,
-      airCostLift: 16, airCostStick: 14, airCostFlip: 9, airMax: 110,
-      roofThrust: 22, torque: 11.5, drag: 0.38, body: "kei",
-      regenGround: 24, regenAir: 10
+    models: {
+      id: "models", color: "#374151", accent: "#111827",
+      mass: 1.08, accel: 33, maxSpeed: 54, lift: 39,
+      airCostLift: 18, airCostStick: 15, airCostFlip: 12, airMax: 100,
+      roofThrust: 22, torque: 8.5, drag: 0.24, body: "models",
+      regenGround: 21, regenAir: 7
     }
   };
 
@@ -200,8 +208,9 @@
   // ---------- Constants ----------
   const G = 26;
   const GROUND_Y = 0;
-  const CAR_HALF_H = 1.15;
-  const CAR_HALF_W = 1.7;
+  const CAR_HALF_H = 1.38; // ~20% larger (was 1.15) — match visual scale
+  const CAR_HALF_W = 2.04; // ~20% larger (was 1.7)
+  const CAR_DRAW_SCALE = 1.2; // visual body scale vs base unit
   const FLIP_BONUS = 500;
   const DIST_SCORE_RATE = 2.5;
   const TIME_SCORE_RATE = 8;
@@ -209,6 +218,8 @@
   const DESPAWN_BEHIND = 40;
   const MARBLE_SCORE_MIN = 50;
   const MARBLE_SCORE_MAX = 100;
+  const MARBLE_MISSION_GOAL = 10;
+  const MARBLE_MISSION_BONUS = 300;
   const MARBLE_COLORS = ["#ef4444", "#3b82f6", "#22c55e", "#eab308", "#a855f7", "#ec4899", "#06b6d4", "#f97316"];
   const LAND_TILT_FAIL = 95; // degrees — only severe rollover
   const LAND_IMPACT_FAIL = 36;
@@ -332,6 +343,7 @@
       nextMarbleX: 58,
       marbleCount: 0,
       marbleScore: 0,
+      marbleMissionDone: false,
       tipLiftShown: false,
       tipMarbleShown: false,
       tipStickShown: false,
@@ -395,35 +407,54 @@
     };
   }
 
+  function avoidObstacleY(x, y) {
+    let yy = y;
+    for (let i = 0; i < state.obstacles.length; i++) {
+      const o = state.obstacles[i];
+      if (Math.abs(o.x - x) < 3.2) {
+        const oc = o.y + o.h * 0.5;
+        if (Math.abs(oc - yy) < (o.h * 0.55 + 1.2)) {
+          yy = o.y + o.h + 1.4 + Math.random() * 1.5;
+        }
+      }
+    }
+    return Math.min(16.5, Math.max(1.8, yy));
+  }
+
   function spawnMarbles() {
     if (!state.launchDone) return;
     while (state.nextMarbleX < state.x + SPAWN_AHEAD) {
-      const gap = 17 + Math.random() * 13;
-      const x = state.nextMarbleX + gap;
-      // Prefer gaps between obstacles / high flip lines — not dense
-      let y;
-      if (Math.random() < 0.5) {
-        y = 7.5 + Math.random() * 6.5; // airborne flip route
+      // Denser trails: shorter gaps + clear route arcs to chase
+      const gap = 9 + Math.random() * 8;
+      const x0 = state.nextMarbleX + gap;
+      const routeRoll = Math.random();
+      let baseY;
+      if (routeRoll < 0.45) {
+        baseY = 8.0 + Math.random() * 5.5; // high flip trail
+      } else if (routeRoll < 0.8) {
+        baseY = 3.0 + Math.random() * 3.2; // mid lane
       } else {
-        y = 2.6 + Math.random() * 3.8; // mid lane between ground hazards
+        baseY = 5.5 + Math.random() * 3.5; // bridging lane
       }
-      for (let i = 0; i < state.obstacles.length; i++) {
-        const o = state.obstacles[i];
-        if (Math.abs(o.x - x) < 3.2) {
-          const oc = o.y + o.h * 0.5;
-          if (Math.abs(oc - y) < (o.h * 0.55 + 1.2)) {
-            y = o.y + o.h + 1.4 + Math.random() * 1.5;
-          }
-        }
+      const trailLen = 3 + ((Math.random() * 3) | 0); // 3–5 marbles in a row
+      const amp = 0.9 + Math.random() * 1.4;
+      const step = 1.55 + Math.random() * 0.45;
+      let lastX = x0;
+      for (let t = 0; t < trailLen; t++) {
+        const x = x0 + t * step;
+        const y = avoidObstacleY(x, baseY + Math.sin(t * 0.95 + x0 * 0.08) * amp);
+        state.marbles.push(makeMarble(x, y));
+        lastX = x;
       }
-      state.marbles.push(makeMarble(x, y));
-      if (Math.random() < 0.22) {
-        state.marbles.push(makeMarble(x + 1.8 + Math.random() * 2.5, Math.min(16, y + 2.2 + Math.random() * 2.5)));
+      // occasional bonus cluster above the trail
+      if (Math.random() < 0.28) {
+        const cx = x0 + step * (trailLen * 0.5);
+        state.marbles.push(makeMarble(cx, avoidObstacleY(cx, Math.min(16, baseY + 2.4 + Math.random() * 1.8))));
       }
-      state.nextMarbleX = x;
+      state.nextMarbleX = lastX;
       if (!state.tipMarbleShown) {
         state.tipMarbleShown = true;
-        showBanner(t().tipMarble, 2.4);
+        showBanner(t().tipMarble, 2.6);
       }
     }
     state.marbles = state.marbles.filter(function (m) { return m.x > state.x - DESPAWN_BEHIND; });
@@ -443,11 +474,24 @@
         state.marbleCount += 1;
         state.marbleScore += m.value;
         showBanner(
-          "<span style='color:#fde68a'>+" + m.value + "</span><span class='sub'>" + t().marbleBonus + "</span>",
+          "<span style='color:#fde68a'>+" + m.value + "</span><span class='sub'>" + t().marbleBonus +
+          " · " + state.marbleCount + "/" + MARBLE_MISSION_GOAL + "</span>",
           0.9
         );
         beep(740, 0.06, "sine");
         setTimeout(function () { beep(980, 0.07, "sine"); }, 55);
+        if (!state.marbleMissionDone && state.marbleCount >= MARBLE_MISSION_GOAL) {
+          state.marbleMissionDone = true;
+          state.marbleScore += MARBLE_MISSION_BONUS;
+          showBanner(
+            "<span style='color:#fde68a'>+" + MARBLE_MISSION_BONUS + "</span><span class='sub'>" +
+            t().marbleMissionDone + "</span>",
+            2.4
+          );
+          beep(520, 0.08, "triangle");
+          setTimeout(function () { beep(780, 0.1, "triangle"); }, 80);
+          setTimeout(function () { beep(1040, 0.12, "triangle"); }, 160);
+        }
       } else {
         kept.push(m);
       }
@@ -825,6 +869,7 @@
       flipBonusTotal: state.flipBonusTotal,
       marbleScore: state.marbleScore,
       marbleCount: state.marbleCount,
+      marbleMissionDone: state.marbleMissionDone,
       flips: state.flipsComplete,
       dist: state.dist,
       rolls: state.rolls
@@ -1130,7 +1175,7 @@
       ctx.stroke();
     }
 
-    drawCarBody(ctx, c, sc / 6);
+    drawCarBody(ctx, c, (sc / 6) * CAR_DRAW_SCALE);
     ctx.restore();
   }
 
@@ -1264,112 +1309,272 @@
       roundRectPath(ctx2, -3.5 * u, -0.15 * u, 8 * u, 0.35 * u, 0.15 * u);
       ctx2.fill();
 
+      // camera / sensor pod (no traditional side mirror)
+      ctx2.fillStyle = "#3f3a32";
+      roundRectPath(ctx2, 5.6 * u, -1.55 * u, 1.35 * u, 0.55 * u, 0.2 * u);
+      ctx2.fill();
+      ctx2.fillStyle = "rgba(125,211,252,0.7)";
+      ctx2.beginPath();
+      ctx2.arc(6.55 * u, -1.28 * u, 0.22 * u, 0, Math.PI * 2);
+      ctx2.fill();
+
       drawWheel(ctx2, -6.2 * u, 3.35 * u, 2.75 * u, 8);
       drawWheel(ctx2, 6.4 * u, 3.35 * u, 2.75 * u, 8);
       return;
     }
 
-    if (body === "suv") {
-      ctx2.fillStyle = c.color;
-      ctx2.strokeStyle = c.accent;
-      roundRectPath(ctx2, -11.5 * u, -7 * u, 23 * u, 10.5 * u, 2.2 * u);
-      ctx2.fill();
-      ctx2.stroke();
-      // roof rails
-      ctx2.strokeStyle = "rgba(0,0,0,0.35)";
-      ctx2.lineWidth = 1;
+    if (body === "model3") {
+      // Model 3 — low sedan, short nose, smooth roof, slim lamps, flush handles (no logos)
+      const paint = ctx2.createLinearGradient(-12 * u, -5 * u, 12 * u, 3 * u);
+      paint.addColorStop(0, "#9ca3af");
+      paint.addColorStop(0.35, "#f3f4f6");
+      paint.addColorStop(0.7, "#e5e7eb");
+      paint.addColorStop(1, "#6b7280");
       ctx2.beginPath();
-      ctx2.moveTo(-5 * u, -7.2 * u);
-      ctx2.lineTo(5.5 * u, -7.2 * u);
-      ctx2.stroke();
-      ctx2.fillStyle = "rgba(30,45,60,0.55)";
-      roundRectPath(ctx2, -6.5 * u, -10.2 * u, 13 * u, 5.2 * u, 1.6 * u);
+      ctx2.moveTo(-11.6 * u, 2.5 * u);
+      ctx2.quadraticCurveTo(-11.8 * u, 0.6 * u, -10.8 * u, -0.8 * u);
+      ctx2.quadraticCurveTo(-9.2 * u, -2.4 * u, -5.8 * u, -3.2 * u);
+      ctx2.quadraticCurveTo(-2.2 * u, -4.0 * u, 1.8 * u, -3.85 * u);
+      ctx2.quadraticCurveTo(6.2 * u, -3.5 * u, 9.8 * u, -1.6 * u);
+      ctx2.quadraticCurveTo(11.8 * u, -0.4 * u, 12.0 * u, 1.4 * u);
+      ctx2.quadraticCurveTo(11.9 * u, 2.8 * u, 10.2 * u, 3.15 * u);
+      ctx2.lineTo(-9.8 * u, 3.15 * u);
+      ctx2.quadraticCurveTo(-11.4 * u, 3.05 * u, -11.6 * u, 2.5 * u);
+      ctx2.closePath();
+      ctx2.fillStyle = paint;
       ctx2.fill();
-      // window split
-      ctx2.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx2.strokeStyle = "#1f2937";
+      ctx2.stroke();
+
+      // greenhouse — low continuous roof glass
+      const glass = ctx2.createLinearGradient(-3 * u, -3.8 * u, 6 * u, -0.5 * u);
+      glass.addColorStop(0, "rgba(15,23,42,0.88)");
+      glass.addColorStop(0.5, "rgba(51,65,85,0.55)");
+      glass.addColorStop(1, "rgba(15,23,42,0.82)");
       ctx2.beginPath();
-      ctx2.moveTo(0.2 * u, -10 * u);
-      ctx2.lineTo(0.2 * u, -5.2 * u);
-      ctx2.stroke();
-      // headlights
-      ctx2.fillStyle = "#fef9c3";
-      roundRectPath(ctx2, 10.2 * u, -2.2 * u, 1.5 * u, 1.6 * u, 0.3 * u);
+      ctx2.moveTo(-4.2 * u, -0.9 * u);
+      ctx2.quadraticCurveTo(-3.6 * u, -3.55 * u, -0.4 * u, -3.75 * u);
+      ctx2.quadraticCurveTo(3.0 * u, -3.7 * u, 5.8 * u, -2.4 * u);
+      ctx2.quadraticCurveTo(6.6 * u, -1.6 * u, 6.2 * u, -0.75 * u);
+      ctx2.quadraticCurveTo(1.2 * u, -0.55 * u, -4.2 * u, -0.9 * u);
+      ctx2.closePath();
+      ctx2.fillStyle = glass;
       ctx2.fill();
+      // B-pillar hint
+      ctx2.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx2.lineWidth = 0.9;
+      ctx2.beginPath();
+      ctx2.moveTo(1.0 * u, -3.5 * u);
+      ctx2.lineTo(1.15 * u, -0.7 * u);
+      ctx2.stroke();
+      // flush door-handle score
+      ctx2.strokeStyle = "rgba(31,41,55,0.45)";
+      ctx2.lineWidth = 1.1;
+      ctx2.beginPath();
+      ctx2.moveTo(2.4 * u, 0.55 * u);
+      ctx2.lineTo(3.9 * u, 0.55 * u);
+      ctx2.stroke();
+      // character line
+      ctx2.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx2.beginPath();
+      ctx2.moveTo(-9.5 * u, 1.55 * u);
+      ctx2.quadraticCurveTo(0, 1.85 * u, 9.8 * u, 1.55 * u);
+      ctx2.stroke();
+
+      // slim horizontal headlamp
+      ctx2.fillStyle = "#f8fafc";
+      ctx2.shadowColor = "rgba(191,219,254,0.95)";
+      ctx2.shadowBlur = 5 * u;
+      roundRectPath(ctx2, 10.55 * u, -0.35 * u, 1.55 * u, 0.72 * u, 0.28 * u);
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+      ctx2.fillStyle = "rgba(147,197,253,0.55)";
+      roundRectPath(ctx2, 10.7 * u, -0.2 * u, 1.15 * u, 0.4 * u, 0.15 * u);
+      ctx2.fill();
+      // slim taillight
+      ctx2.fillStyle = "#fecaca";
+      ctx2.shadowColor = "rgba(248,113,113,0.85)";
+      ctx2.shadowBlur = 4 * u;
+      roundRectPath(ctx2, -11.85 * u, -0.25 * u, 1.25 * u, 0.7 * u, 0.22 * u);
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+
+      drawWheel(ctx2, -5.9 * u, 3.2 * u, 2.65 * u, 5);
+      drawWheel(ctx2, 6.1 * u, 3.2 * u, 2.65 * u, 5);
+      return;
+    }
+
+    if (body === "modely") {
+      // Model Y — taller crossover, bigger glass, kicked-up rear, family lamps
+      const paint = ctx2.createLinearGradient(-12 * u, -7 * u, 11 * u, 3 * u);
+      paint.addColorStop(0, "#0f2744");
+      paint.addColorStop(0.4, "#1e3a5f");
+      paint.addColorStop(0.75, "#2563eb");
+      paint.addColorStop(1, "#0b1c33");
+      ctx2.beginPath();
+      ctx2.moveTo(-11.4 * u, 2.6 * u);
+      ctx2.quadraticCurveTo(-11.6 * u, 0.4 * u, -10.4 * u, -1.4 * u);
+      ctx2.quadraticCurveTo(-8.6 * u, -3.6 * u, -4.8 * u, -4.8 * u);
+      ctx2.quadraticCurveTo(-1.2 * u, -5.6 * u, 2.6 * u, -5.35 * u);
+      ctx2.quadraticCurveTo(6.8 * u, -4.9 * u, 9.6 * u, -2.8 * u);
+      ctx2.quadraticCurveTo(11.4 * u, -1.4 * u, 11.6 * u, 0.8 * u);
+      ctx2.quadraticCurveTo(11.5 * u, 2.6 * u, 9.8 * u, 3.2 * u);
+      ctx2.lineTo(-9.6 * u, 3.2 * u);
+      ctx2.quadraticCurveTo(-11.2 * u, 3.1 * u, -11.4 * u, 2.6 * u);
+      ctx2.closePath();
+      ctx2.fillStyle = paint;
+      ctx2.fill();
+      ctx2.strokeStyle = "#0f172a";
+      ctx2.stroke();
+
+      // larger DLO / windows + kicked rear glass
+      const glass = ctx2.createLinearGradient(-4 * u, -5.4 * u, 6 * u, -0.4 * u);
+      glass.addColorStop(0, "rgba(15,23,42,0.9)");
+      glass.addColorStop(0.45, "rgba(56,78,110,0.55)");
+      glass.addColorStop(1, "rgba(15,23,42,0.85)");
+      ctx2.beginPath();
+      ctx2.moveTo(-4.6 * u, -1.0 * u);
+      ctx2.quadraticCurveTo(-4.0 * u, -4.7 * u, -0.6 * u, -5.2 * u);
+      ctx2.quadraticCurveTo(2.8 * u, -5.25 * u, 5.4 * u, -3.9 * u);
+      ctx2.quadraticCurveTo(6.6 * u, -3.0 * u, 6.9 * u, -1.55 * u); // kicked-up rear
+      ctx2.quadraticCurveTo(2.2 * u, -0.7 * u, -4.6 * u, -1.0 * u);
+      ctx2.closePath();
+      ctx2.fillStyle = glass;
+      ctx2.fill();
+      // window splits (3 panes feel)
+      ctx2.strokeStyle = "rgba(255,255,255,0.14)";
+      ctx2.lineWidth = 0.85;
+      ctx2.beginPath();
+      ctx2.moveTo(-0.6 * u, -5.0 * u);
+      ctx2.lineTo(-0.4 * u, -0.95 * u);
+      ctx2.moveTo(3.0 * u, -4.7 * u);
+      ctx2.lineTo(3.2 * u, -1.1 * u);
+      ctx2.stroke();
+      // roof spoiler lip
+      ctx2.strokeStyle = "rgba(148,163,184,0.55)";
+      ctx2.lineWidth = 1.2;
+      ctx2.beginPath();
+      ctx2.moveTo(5.2 * u, -5.15 * u);
+      ctx2.quadraticCurveTo(6.6 * u, -5.05 * u, 7.15 * u, -4.2 * u);
+      ctx2.stroke();
+      // rocker
+      ctx2.strokeStyle = "rgba(255,255,255,0.16)";
+      ctx2.beginPath();
+      ctx2.moveTo(-9.8 * u, 1.9 * u);
+      ctx2.quadraticCurveTo(0, 2.25 * u, 9.4 * u, 1.9 * u);
+      ctx2.stroke();
+
+      // headlamp — slightly taller/angled vs Model 3
+      ctx2.fillStyle = "#e0f2fe";
+      ctx2.shadowColor = "rgba(125,211,252,0.9)";
+      ctx2.shadowBlur = 5 * u;
+      ctx2.beginPath();
+      ctx2.moveTo(10.2 * u, -0.85 * u);
+      ctx2.lineTo(11.55 * u, -0.55 * u);
+      ctx2.lineTo(11.55 * u, 0.55 * u);
+      ctx2.lineTo(10.15 * u, 0.35 * u);
+      ctx2.closePath();
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+      // full-width-ish taillight bar feel
       ctx2.fillStyle = "#fca5a5";
-      roundRectPath(ctx2, -12.2 * u, -1.8 * u, 1.2 * u, 1.3 * u, 0.25 * u);
+      ctx2.shadowColor = "rgba(248,113,113,0.85)";
+      ctx2.shadowBlur = 4 * u;
+      roundRectPath(ctx2, -11.7 * u, -0.55 * u, 1.35 * u, 1.15 * u, 0.25 * u);
       ctx2.fill();
-      // door lines
-      ctx2.strokeStyle = "rgba(0,0,0,0.25)";
-      ctx2.beginPath();
-      ctx2.moveTo(-2 * u, -6.5 * u);
-      ctx2.lineTo(-2 * u, 3 * u);
-      ctx2.moveTo(4 * u, -6.5 * u);
-      ctx2.lineTo(4 * u, 3 * u);
-      ctx2.stroke();
-      drawWheel(ctx2, -6.5 * u, 3.5 * u, 2.9 * u, 6);
-      drawWheel(ctx2, 6.8 * u, 3.5 * u, 2.9 * u, 6);
+      ctx2.shadowBlur = 0;
+
+      drawWheel(ctx2, -5.7 * u, 3.25 * u, 2.85 * u, 5);
+      drawWheel(ctx2, 5.9 * u, 3.25 * u, 2.85 * u, 5);
       return;
     }
 
-    if (body === "sports") {
-      ctx2.fillStyle = c.color;
-      ctx2.strokeStyle = c.accent;
+    if (body === "models") {
+      // Model S — longer luxury sedan, flowing roof, long wheelbase, unique lamp lines
+      const paint = ctx2.createLinearGradient(-14 * u, -5 * u, 13 * u, 3 * u);
+      paint.addColorStop(0, "#111827");
+      paint.addColorStop(0.3, "#4b5563");
+      paint.addColorStop(0.65, "#6b7280");
+      paint.addColorStop(1, "#1f2937");
       ctx2.beginPath();
-      ctx2.moveTo(-12.5 * u, 2.2 * u);
-      ctx2.lineTo(-11 * u, -2.8 * u);
-      ctx2.quadraticCurveTo(-4 * u, -5.5 * u, 2 * u, -5.2 * u);
-      ctx2.lineTo(11.5 * u, -1.5 * u);
-      ctx2.quadraticCurveTo(13 * u, 0.5 * u, 12 * u, 3 * u);
-      ctx2.lineTo(-11 * u, 3.2 * u);
+      ctx2.moveTo(-13.2 * u, 2.45 * u);
+      ctx2.quadraticCurveTo(-13.4 * u, 0.5 * u, -12.2 * u, -1.0 * u);
+      ctx2.quadraticCurveTo(-10.2 * u, -2.8 * u, -6.0 * u, -3.6 * u);
+      ctx2.quadraticCurveTo(-1.5 * u, -4.35 * u, 3.2 * u, -4.15 * u);
+      ctx2.quadraticCurveTo(8.0 * u, -3.8 * u, 11.4 * u, -1.9 * u);
+      ctx2.quadraticCurveTo(13.2 * u, -0.7 * u, 13.3 * u, 1.2 * u);
+      ctx2.quadraticCurveTo(13.2 * u, 2.7 * u, 11.4 * u, 3.1 * u);
+      ctx2.lineTo(-11.4 * u, 3.1 * u);
+      ctx2.quadraticCurveTo(-13.0 * u, 3.0 * u, -13.2 * u, 2.45 * u);
       ctx2.closePath();
+      ctx2.fillStyle = paint;
       ctx2.fill();
+      ctx2.strokeStyle = "#0b1220";
       ctx2.stroke();
-      ctx2.fillStyle = "rgba(20,30,50,0.5)";
-      ctx2.beginPath();
-      ctx2.moveTo(-1.5 * u, -4.8 * u);
-      ctx2.lineTo(5 * u, -4.6 * u);
-      ctx2.lineTo(6.5 * u, -1.2 * u);
-      ctx2.lineTo(-2.5 * u, -1.2 * u);
-      ctx2.closePath();
-      ctx2.fill();
-      // side scoop
-      ctx2.fillStyle = "rgba(0,0,0,0.25)";
-      ctx2.beginPath();
-      ctx2.ellipse(1 * u, 0.8 * u, 3.2 * u, 1.1 * u, 0, 0, Math.PI * 2);
-      ctx2.fill();
-      ctx2.fillStyle = "#fef08a";
-      roundRectPath(ctx2, 10.5 * u, -1.2 * u, 1.6 * u, 1.2 * u, 0.3 * u);
-      ctx2.fill();
-      ctx2.fillStyle = "#fb7185";
-      roundRectPath(ctx2, -12.8 * u, -0.6 * u, 1.3 * u, 1.0 * u, 0.25 * u);
-      ctx2.fill();
-      drawWheel(ctx2, -6.2 * u, 3.3 * u, 2.7 * u, 5);
-      drawWheel(ctx2, 6.6 * u, 3.3 * u, 2.7 * u, 5);
-      return;
-    }
 
-    if (body === "kei") {
-      ctx2.fillStyle = c.color;
-      ctx2.strokeStyle = c.accent;
-      roundRectPath(ctx2, -9.5 * u, -6.2 * u, 19 * u, 9.5 * u, 2.8 * u);
-      ctx2.fill();
-      ctx2.stroke();
-      ctx2.fillStyle = "rgba(50,70,95,0.4)";
-      roundRectPath(ctx2, -5.2 * u, -9.4 * u, 10.5 * u, 4.8 * u, 1.6 * u);
-      ctx2.fill();
-      ctx2.strokeStyle = "rgba(0,0,0,0.2)";
+      // long flowing greenhouse
+      const glass = ctx2.createLinearGradient(-5 * u, -4.2 * u, 8 * u, -0.4 * u);
+      glass.addColorStop(0, "rgba(15,23,42,0.9)");
+      glass.addColorStop(0.5, "rgba(71,85,105,0.5)");
+      glass.addColorStop(1, "rgba(15,23,42,0.85)");
       ctx2.beginPath();
-      ctx2.moveTo(0.2 * u, -9.2 * u);
-      ctx2.lineTo(0.2 * u, -4.8 * u);
-      ctx2.stroke();
-      ctx2.fillStyle = "#fff7ed";
-      roundRectPath(ctx2, 8.2 * u, -2 * u, 1.4 * u, 1.4 * u, 0.35 * u);
+      ctx2.moveTo(-5.4 * u, -0.95 * u);
+      ctx2.quadraticCurveTo(-4.6 * u, -3.7 * u, -0.8 * u, -4.05 * u);
+      ctx2.quadraticCurveTo(3.5 * u, -4.15 * u, 7.2 * u, -3.0 * u);
+      ctx2.quadraticCurveTo(8.4 * u, -2.2 * u, 8.0 * u, -0.8 * u);
+      ctx2.quadraticCurveTo(1.5 * u, -0.5 * u, -5.4 * u, -0.95 * u);
+      ctx2.closePath();
+      ctx2.fillStyle = glass;
       ctx2.fill();
+      // chrome-ish roof highlight
+      ctx2.strokeStyle = "rgba(226,232,240,0.28)";
+      ctx2.lineWidth = 1.0;
+      ctx2.beginPath();
+      ctx2.moveTo(-4.2 * u, -3.5 * u);
+      ctx2.quadraticCurveTo(2.0 * u, -4.15 * u, 7.0 * u, -2.7 * u);
+      ctx2.stroke();
+      // long character line
+      ctx2.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx2.beginPath();
+      ctx2.moveTo(-11.5 * u, 1.45 * u);
+      ctx2.quadraticCurveTo(0, 1.75 * u, 11.2 * u, 1.4 * u);
+      ctx2.stroke();
+      // flush handles
+      ctx2.strokeStyle = "rgba(209,213,219,0.35)";
+      ctx2.lineWidth = 1.05;
+      ctx2.beginPath();
+      ctx2.moveTo(0.2 * u, 0.45 * u);
+      ctx2.lineTo(1.6 * u, 0.45 * u);
+      ctx2.moveTo(3.4 * u, 0.45 * u);
+      ctx2.lineTo(4.8 * u, 0.45 * u);
+      ctx2.stroke();
+
+      // unique swept headlamp
+      ctx2.fillStyle = "#f1f5f9";
+      ctx2.shadowColor = "rgba(186,230,253,0.95)";
+      ctx2.shadowBlur = 5 * u;
+      ctx2.beginPath();
+      ctx2.moveTo(11.0 * u, -0.95 * u);
+      ctx2.quadraticCurveTo(12.6 * u, -0.7 * u, 13.05 * u, -0.15 * u);
+      ctx2.lineTo(13.0 * u, 0.45 * u);
+      ctx2.quadraticCurveTo(12.2 * u, 0.35 * u, 11.0 * u, 0.15 * u);
+      ctx2.closePath();
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+      // long horizontal taillight
       ctx2.fillStyle = "#fda4af";
-      roundRectPath(ctx2, -10.2 * u, -1.6 * u, 1.1 * u, 1.1 * u, 0.25 * u);
+      ctx2.shadowColor = "rgba(244,63,94,0.85)";
+      ctx2.shadowBlur = 4 * u;
+      roundRectPath(ctx2, -13.35 * u, -0.35 * u, 1.55 * u, 0.75 * u, 0.25 * u);
       ctx2.fill();
-      drawWheel(ctx2, -5.5 * u, 3.3 * u, 2.5 * u, 5);
-      drawWheel(ctx2, 5.8 * u, 3.3 * u, 2.5 * u, 5);
+      ctx2.shadowBlur = 0;
+      ctx2.fillStyle = "rgba(251,113,133,0.55)";
+      roundRectPath(ctx2, -13.15 * u, -0.15 * u, 1.1 * u, 0.35 * u, 0.12 * u);
+      ctx2.fill();
+
+      // longer wheelbase placement
+      drawWheel(ctx2, -6.8 * u, 3.15 * u, 2.7 * u, 7);
+      drawWheel(ctx2, 6.9 * u, 3.15 * u, 2.7 * u, 7);
       return;
     }
 
@@ -1415,7 +1620,11 @@
     $("hudDist").textContent = String(Math.round(state.dist));
     $("hudRolls").textContent = state.rolls.toFixed(1);
     if ($("hudScore")) $("hudScore").textContent = String(Math.floor(state.score));
-    if ($("hudMarbles")) $("hudMarbles").textContent = String(state.marbleCount);
+    if ($("hudMarbles")) {
+      $("hudMarbles").textContent = state.marbleCount + "/" + MARBLE_MISSION_GOAL;
+      const pill = $("hudMarbles").closest(".stat-pill");
+      if (pill) pill.classList.toggle("mission-done", !!state.marbleMissionDone);
+    }
     if ($("lblMarbles")) $("lblMarbles").textContent = st.marbles;
   }
 
@@ -1519,6 +1728,9 @@
     if (r.reason === "flip") reason = s.reasonFlip;
     else if (r.reason === "fall") reason = s.reasonFall;
 
+    const mDone = r.marbleMissionDone
+      ? " · <span style='color:#4ade80'>" + s.marbleMissionDone + "</span>"
+      : " · " + s.marbleMissionGoal + " " + MARBLE_MISSION_GOAL;
     $("resultBody").innerHTML =
       "<strong style='font-size:22px'>" + Math.floor(r.score) + "</strong><br>" +
       s.totalScore + "<br><br>" +
@@ -1526,7 +1738,10 @@
       s.distScore + ": " + r.distScore + " (" + Math.round(r.dist) + " m)<br>" +
       s.timeScore + ": " + r.timeScore + "<br>" +
       s.flipScore + ": " + r.flipBonusTotal + " (" + s.flipsDone + " " + r.flips + ")<br>" +
-      s.marbleScore + ": " + (r.marbleScore || 0) + " (" + (r.marbleCount || 0) + ")<br>" +
+      "<span style='display:inline-block;margin-top:6px;padding:6px 10px;border-radius:10px;" +
+      "background:rgba(250,204,21,0.18);border:1px solid rgba(250,204,21,0.45)'>" +
+      "<strong style='color:#fde68a'>" + s.marbleScore + ": " + (r.marbleScore || 0) + "</strong>" +
+      " · " + (r.marbleCount || 0) + " " + s.marbles + mDone + "</span><br>" +
       s.rolls + ": " + r.rolls.toFixed(1);
     openOverlay("resultOverlay");
   }

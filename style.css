@@ -308,6 +308,12 @@ body {
   letter-spacing: 0.04em;
 }
 
+.stat-pill.mission-done {
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  border: 1px solid #eab308;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.35);
+}
+
 .banner {
   position: absolute;
   left: 50%;
