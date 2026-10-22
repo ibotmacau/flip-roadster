@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#e8e8e8" />
-  <meta name="description" content="Flip Roadster — side-view stunt runner. Climb, stick, flip into the night sky, survive for high score." />
+  <meta name="description" content="Flip Roadster — side-view stunt runner with Cybercab. Climb, stick, flip, collect marbles, survive for high score." />
   <title>翻滾敞篷｜免費瀏覽器遊戲</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -37,7 +37,7 @@
 
         <div class="hud" aria-live="polite">
           <div class="hud-tl">
-            <p class="car-name" id="hudCarName">敞篷跑車</p>
+            <p class="car-name" id="hudCarName">無人計程車</p>
             <div class="air-row">
               <span id="lblAir">空氣</span>
               <div class="air-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="airBar">
@@ -52,6 +52,7 @@
             <div class="stat-pill"><span class="label" id="lblDist">距離</span><span id="hudDist">0</span> m</div>
             <div class="stat-pill"><span class="label" id="lblHeight">高度</span><span id="hudHeight">0.0</span> m</div>
             <div class="stat-pill"><span class="label" id="lblRolls">旋轉</span><span id="hudRolls">0</span></div>
+            <div class="stat-pill"><span class="label" id="lblMarbles">波子</span><span id="hudMarbles">0</span></div>
           </div>
         </div>
 
@@ -83,7 +84,7 @@
     <div class="modal">
       <h2 id="startTitle">翻滾敞篷</h2>
       <ol class="howto-list" id="howtoList">
-        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li><li></li>
       </ol>
       <button type="button" class="primary-btn secondary" id="btnPickCarFromStart">選擇車輛</button>
       <button type="button" class="primary-btn" id="btnStart">開始</button>

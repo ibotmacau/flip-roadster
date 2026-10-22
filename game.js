@@ -39,7 +39,8 @@
         "「升」升起／調高度避開地面障礙；「翻」空中翻滾攞 bonus；「前」前進加速。升+翻可相對車頂推力減速着地。",
         "飛出後係夜空星星場景畀你翻滾；吸附只係牆面機械，同星空無關。空中完整 1 圈（2π）+500。",
         "升／吸／翻耗氣；唔用掣會回充，地面更快。空氣空咗就升唔起、吸唔住。",
-        "平面落地（輪胎朝下）可繼續開。只喺撞障礙、嚴重翻車、掉出地圖先 Game Over。"
+        "平面落地（輪胎朝下）可繼續開。只喺撞障礙、嚴重翻車、掉出地圖先 Game Over。",
+        "沿途／空中有彩色玻璃波子：撞到即收集得分（唔會死），飛高啲更容易撿。"
       ],
       tipLift: "按住「升」升起避開地面障礙！",
       tipStick: "牆上／反翹按住「吸」唔好鬆！",
@@ -59,11 +60,15 @@
       reasonFlip: "翻車失控",
       reasonFall: "掉出地圖",
       cars: {
-        roadster: { name: "敞篷跑車", blurb: "均衡 · 經典" },
+        cybercab: { name: "無人計程車", blurb: "香檳金 · 兩座無方向盤" },
         suv: { name: "越野休旅", blurb: "較重 · 空氣多" },
         sports: { name: "超跑", blurb: "更快 · 較耗氣" },
         kei: { name: "輕自動車", blurb: "輕巧 · 好翻滾" }
-      }
+      },
+      marbles: "波子",
+      marbleBonus: "收集波子",
+      marbleScore: "波子分",
+      tipMarble: "飛高／夾縫收集彩色波子得分！"
     },
     en: {
       htmlLang: "en",
@@ -97,7 +102,8 @@
         "Lift raises altitude over ground hazards. Flip rolls in the air for bonus. Drive accelerates. Lift+Flip adds roof-relative thrust to soften landings.",
         "After launch you're in a starry night sky for flipping — Stick is wall adhesion only, unrelated to the stars. Full aerial flip (2π) → +500.",
         "Lift, Stick & Flip burn air. Air refills when idle, faster on the ground. Empty air = no lift / no stick.",
-        "Wheels-down landings continue the run. Only obstacle hits, severe rollovers, or falling off the map end the game."
+        "Wheels-down landings continue the run. Only obstacle hits, severe rollovers, or falling off the map end the game.",
+        "Colorful glass marbles float along the route — touch to collect score (never lethal). Fly higher to grab more."
       ],
       tipLift: "Hold Lift to rise over ground hazards!",
       tipStick: "Hold Stick on the wall / lip — don't let go!",
@@ -117,22 +123,26 @@
       reasonFlip: "Rolled over",
       reasonFall: "Fell off the map",
       cars: {
-        roadster: { name: "Roadster", blurb: "Balanced · classic" },
+        cybercab: { name: "Cybercab", blurb: "Champagne · two-seat robotaxi" },
         suv: { name: "SUV", blurb: "Heavy · more air" },
         sports: { name: "Sports", blurb: "Faster · thirstier" },
         kei: { name: "Kei car", blurb: "Light · more roll" }
-      }
+      },
+      marbles: "Marbles",
+      marbleBonus: "Marble!",
+      marbleScore: "Marble score",
+      tipMarble: "Grab floating glass marbles for bonus points!"
     }
   };
 
   // ---------- Cars ----------
   const CARS = {
-    roadster: {
-      id: "roadster", color: "#c8ccd2", accent: "#333",
-      mass: 1.0, accel: 28, maxSpeed: 48, lift: 38,
-      airCostLift: 18, airCostStick: 16, airCostFlip: 12, airMax: 100,
-      roofThrust: 20, torque: 8.5, drag: 0.32, body: "roadster",
-      regenGround: 22, regenAir: 8
+    cybercab: {
+      id: "cybercab", color: "#c9b48a", accent: "#5c4e36",
+      mass: 1.0, accel: 30, maxSpeed: 50, lift: 40,
+      airCostLift: 17, airCostStick: 15, airCostFlip: 11, airMax: 105,
+      roofThrust: 21, torque: 8.8, drag: 0.28, body: "cybercab",
+      regenGround: 23, regenAir: 8
     },
     suv: {
       id: "suv", color: "#3d5c4a", accent: "#1a2e22",
@@ -164,7 +174,7 @@
 
   let lang = "tw";
   let muted = false;
-  let selectedCarId = "roadster";
+  let selectedCarId = "cybercab";
   let started = false;
   let running = false;
 
@@ -197,6 +207,9 @@
   const TIME_SCORE_RATE = 8;
   const SPAWN_AHEAD = 90;
   const DESPAWN_BEHIND = 40;
+  const MARBLE_SCORE_MIN = 50;
+  const MARBLE_SCORE_MAX = 100;
+  const MARBLE_COLORS = ["#ef4444", "#3b82f6", "#22c55e", "#eab308", "#a855f7", "#ec4899", "#06b6d4", "#f97316"];
   const LAND_TILT_FAIL = 95; // degrees — only severe rollover
   const LAND_IMPACT_FAIL = 36;
 
@@ -314,8 +327,13 @@
       liftOn: false,
       stickOn: false,
       obstacles: [],
+      marbles: [],
       nextSpawnX: 55,
+      nextMarbleX: 58,
+      marbleCount: 0,
+      marbleScore: 0,
       tipLiftShown: false,
+      tipMarbleShown: false,
       tipStickShown: false,
       tipAirShown: false,
       tipFlipShown: false,
@@ -363,6 +381,78 @@
       }
     }
     state.obstacles = state.obstacles.filter(function (o) { return o.x > state.x - DESPAWN_BEHIND; });
+  }
+
+  function makeMarble(x, y) {
+    const value = MARBLE_SCORE_MIN + ((Math.random() * (MARBLE_SCORE_MAX - MARBLE_SCORE_MIN + 1)) | 0);
+    return {
+      x: x,
+      y: y,
+      r: 0.52 + Math.random() * 0.12,
+      color: MARBLE_COLORS[(Math.random() * MARBLE_COLORS.length) | 0],
+      bob: Math.random() * Math.PI * 2,
+      value: value
+    };
+  }
+
+  function spawnMarbles() {
+    if (!state.launchDone) return;
+    while (state.nextMarbleX < state.x + SPAWN_AHEAD) {
+      const gap = 17 + Math.random() * 13;
+      const x = state.nextMarbleX + gap;
+      // Prefer gaps between obstacles / high flip lines — not dense
+      let y;
+      if (Math.random() < 0.5) {
+        y = 7.5 + Math.random() * 6.5; // airborne flip route
+      } else {
+        y = 2.6 + Math.random() * 3.8; // mid lane between ground hazards
+      }
+      for (let i = 0; i < state.obstacles.length; i++) {
+        const o = state.obstacles[i];
+        if (Math.abs(o.x - x) < 3.2) {
+          const oc = o.y + o.h * 0.5;
+          if (Math.abs(oc - y) < (o.h * 0.55 + 1.2)) {
+            y = o.y + o.h + 1.4 + Math.random() * 1.5;
+          }
+        }
+      }
+      state.marbles.push(makeMarble(x, y));
+      if (Math.random() < 0.22) {
+        state.marbles.push(makeMarble(x + 1.8 + Math.random() * 2.5, Math.min(16, y + 2.2 + Math.random() * 2.5)));
+      }
+      state.nextMarbleX = x;
+      if (!state.tipMarbleShown) {
+        state.tipMarbleShown = true;
+        showBanner(t().tipMarble, 2.4);
+      }
+    }
+    state.marbles = state.marbles.filter(function (m) { return m.x > state.x - DESPAWN_BEHIND; });
+  }
+
+  function checkMarbleCollect() {
+    if (!state.launchDone && state.mode === "track") return;
+    const box = carAABB();
+    const kept = [];
+    for (let i = 0; i < state.marbles.length; i++) {
+      const m = state.marbles[i];
+      const mx0 = m.x - m.r;
+      const mx1 = m.x + m.r;
+      const my0 = m.y - m.r;
+      const my1 = m.y + m.r;
+      if (box.x1 > mx0 && box.x0 < mx1 && box.y1 > my0 && box.y0 < my1) {
+        state.marbleCount += 1;
+        state.marbleScore += m.value;
+        showBanner(
+          "<span style='color:#fde68a'>+" + m.value + "</span><span class='sub'>" + t().marbleBonus + "</span>",
+          0.9
+        );
+        beep(740, 0.06, "sine");
+        setTimeout(function () { beep(980, 0.07, "sine"); }, 55);
+      } else {
+        kept.push(m);
+      }
+    }
+    state.marbles = kept;
   }
 
   // ---------- Physics ----------
@@ -436,10 +526,12 @@
 
     state.distScore = Math.floor(state.dist * DIST_SCORE_RATE);
     state.timeScore = Math.floor(state.aliveTime * TIME_SCORE_RATE);
-    state.score = state.distScore + state.timeScore + state.flipBonusTotal;
+    state.score = state.distScore + state.timeScore + state.flipBonusTotal + state.marbleScore;
 
     spawnObstacles();
+    spawnMarbles();
     checkObstacleHits();
+    checkMarbleCollect();
 
     if (state.y < -25) {
       finish("fall");
@@ -465,6 +557,7 @@
     state.y = p.y + CAR_HALF_H * 0.4;
     state.x = p.x;
     state.nextSpawnX = Math.max(state.nextSpawnX, state.x + 35);
+    state.nextMarbleX = Math.max(state.nextMarbleX, state.x + 28);
     if (!state.tipLaunchShown) {
       state.tipLaunchShown = true;
       showBanner(t().tipLaunch, 2.6);
@@ -675,6 +768,9 @@
     if (state.nextSpawnX < state.x + 20) {
       state.nextSpawnX = state.x + 28;
     }
+    if (state.nextMarbleX < state.x + 16) {
+      state.nextMarbleX = state.x + 22;
+    }
     beep(320, 0.05, "triangle");
   }
 
@@ -727,6 +823,8 @@
       distScore: state.distScore,
       timeScore: state.timeScore,
       flipBonusTotal: state.flipBonusTotal,
+      marbleScore: state.marbleScore,
+      marbleCount: state.marbleCount,
       flips: state.flipsComplete,
       dist: state.dist,
       rolls: state.rolls
@@ -806,6 +904,7 @@
     drawLaunchTrack();
     drawGround();
     drawObstacles();
+    drawMarbles();
     drawCar();
     updateHUD();
   }
@@ -969,6 +1068,37 @@
     ctx2.closePath();
   }
 
+  function drawMarbles() {
+    const tNow = performance.now() / 1000;
+    for (let i = 0; i < state.marbles.length; i++) {
+      const m = state.marbles[i];
+      const bobY = m.y + Math.sin(tNow * 2.4 + m.bob) * 0.22;
+      const p = worldToScreen(m.x, bobY);
+      const r = Math.max(4, m.r * p.scale);
+      const g = ctx.createRadialGradient(
+        p.x - r * 0.35, p.y - r * 0.4, r * 0.1,
+        p.x, p.y, r
+      );
+      g.addColorStop(0, "#ffffff");
+      g.addColorStop(0.22, m.color);
+      g.addColorStop(0.75, m.color);
+      g.addColorStop(1, "rgba(0,0,0,0.35)");
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.beginPath();
+      ctx.ellipse(p.x - r * 0.32, p.y - r * 0.38, r * 0.28, r * 0.18, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r - 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
   function drawCar() {
     const p = worldToScreen(state.x, state.y);
     const sc = p.scale;
@@ -1004,73 +1134,266 @@
     ctx.restore();
   }
 
+  function drawWheel(ctx2, cx, cy, r, spokes) {
+    // tire
+    ctx2.beginPath();
+    ctx2.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx2.fillStyle = "#141414";
+    ctx2.fill();
+    // rim disc
+    ctx2.beginPath();
+    ctx2.arc(cx, cy, r * 0.72, 0, Math.PI * 2);
+    ctx2.fillStyle = "#2a2a2e";
+    ctx2.fill();
+    ctx2.strokeStyle = "#6b7280";
+    ctx2.lineWidth = Math.max(0.6, r * 0.08);
+    ctx2.stroke();
+    // multi-spoke
+    const n = spokes || 7;
+    ctx2.strokeStyle = "#9ca3af";
+    ctx2.lineWidth = Math.max(0.5, r * 0.1);
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      ctx2.beginPath();
+      ctx2.moveTo(cx + Math.cos(a) * r * 0.18, cy + Math.sin(a) * r * 0.18);
+      ctx2.lineTo(cx + Math.cos(a) * r * 0.62, cy + Math.sin(a) * r * 0.62);
+      ctx2.stroke();
+    }
+    // hub
+    ctx2.beginPath();
+    ctx2.arc(cx, cy, r * 0.2, 0, Math.PI * 2);
+    ctx2.fillStyle = "#d1d5db";
+    ctx2.fill();
+  }
+
   function drawCarBody(ctx2, c, u) {
     const body = c.body;
-    ctx2.fillStyle = c.color;
-    ctx2.strokeStyle = c.accent;
-    ctx2.lineWidth = 1.2;
+    ctx2.lineWidth = 1.15;
 
-    if (body === "suv") {
-      roundRectPath(ctx2, -11 * u, -7 * u, 22 * u, 10 * u, 2 * u);
-      ctx2.fill();
-      ctx2.stroke();
-      ctx2.fillStyle = "rgba(40,60,80,0.45)";
-      roundRectPath(ctx2, -6 * u, -10 * u, 12 * u, 5 * u, 1.5 * u);
-      ctx2.fill();
-    } else if (body === "sports") {
+    // soft underbody shadow (all cars)
+    ctx2.fillStyle = "rgba(0,0,0,0.22)";
+    ctx2.beginPath();
+    ctx2.ellipse(0, 4.6 * u, 11 * u, 1.15 * u, 0, 0, Math.PI * 2);
+    ctx2.fill();
+
+    if (body === "cybercab") {
+      // Champagne-gold Cybercab-inspired two-seat robotaxi (side view homage; no logos)
+      const paint = ctx2.createLinearGradient(-12 * u, -6 * u, 12 * u, 4 * u);
+      paint.addColorStop(0, "#a89268");
+      paint.addColorStop(0.35, "#d4c19a");
+      paint.addColorStop(0.7, "#c9b48a");
+      paint.addColorStop(1, "#8f7a52");
+
+      // rounded wedge / smooth coupe silhouette
       ctx2.beginPath();
-      ctx2.moveTo(-12 * u, 2 * u);
-      ctx2.lineTo(-10 * u, -3 * u);
-      ctx2.lineTo(2 * u, -5 * u);
-      ctx2.lineTo(12 * u, -1 * u);
-      ctx2.lineTo(11 * u, 3 * u);
+      ctx2.moveTo(-12.2 * u, 2.4 * u);
+      ctx2.quadraticCurveTo(-12.4 * u, 0.2 * u, -11.2 * u, -1.6 * u);
+      ctx2.quadraticCurveTo(-9.5 * u, -3.8 * u, -5.5 * u, -4.6 * u);
+      ctx2.quadraticCurveTo(-1.5 * u, -5.4 * u, 2.5 * u, -5.2 * u);
+      ctx2.quadraticCurveTo(7.5 * u, -4.8 * u, 10.8 * u, -2.6 * u);
+      ctx2.quadraticCurveTo(12.6 * u, -1.2 * u, 12.4 * u, 1.2 * u);
+      ctx2.quadraticCurveTo(12.2 * u, 3.0 * u, 10.5 * u, 3.4 * u);
+      ctx2.lineTo(-10.2 * u, 3.4 * u);
+      ctx2.quadraticCurveTo(-12.0 * u, 3.3 * u, -12.2 * u, 2.4 * u);
       ctx2.closePath();
+      ctx2.fillStyle = paint;
       ctx2.fill();
+      ctx2.strokeStyle = "#5c4e36";
       ctx2.stroke();
-      ctx2.fillStyle = "rgba(30,40,60,0.4)";
+
+      // dark glass canopy (closed cabin, no steering-wheel cut)
+      const glass = ctx2.createLinearGradient(-4 * u, -5.2 * u, 6 * u, -0.5 * u);
+      glass.addColorStop(0, "rgba(18, 24, 36, 0.92)");
+      glass.addColorStop(0.45, "rgba(40, 52, 72, 0.78)");
+      glass.addColorStop(1, "rgba(12, 16, 28, 0.9)");
       ctx2.beginPath();
-      ctx2.moveTo(-2 * u, -4.5 * u);
-      ctx2.lineTo(4 * u, -4.5 * u);
-      ctx2.lineTo(6 * u, -1.5 * u);
-      ctx2.lineTo(-3 * u, -1.5 * u);
+      ctx2.moveTo(-4.8 * u, -1.2 * u);
+      ctx2.quadraticCurveTo(-4.2 * u, -4.8 * u, -0.5 * u, -5.05 * u);
+      ctx2.quadraticCurveTo(3.2 * u, -5.15 * u, 6.4 * u, -3.6 * u);
+      ctx2.quadraticCurveTo(7.6 * u, -2.6 * u, 7.2 * u, -1.0 * u);
+      ctx2.quadraticCurveTo(2 * u, -0.7 * u, -4.8 * u, -1.2 * u);
       ctx2.closePath();
+      ctx2.fillStyle = glass;
       ctx2.fill();
-    } else if (body === "kei") {
-      roundRectPath(ctx2, -9 * u, -6 * u, 18 * u, 9 * u, 2.5 * u);
-      ctx2.fill();
+      // canopy highlight
+      ctx2.strokeStyle = "rgba(180,200,230,0.35)";
+      ctx2.lineWidth = 0.9;
+      ctx2.beginPath();
+      ctx2.moveTo(-3.2 * u, -4.2 * u);
+      ctx2.quadraticCurveTo(1.5 * u, -4.9 * u, 5.5 * u, -3.4 * u);
       ctx2.stroke();
-      ctx2.fillStyle = "rgba(60,80,100,0.35)";
-      roundRectPath(ctx2, -5 * u, -9 * u, 10 * u, 4.5 * u, 1.5 * u);
-      ctx2.fill();
-    } else {
+
+      // door seam
+      ctx2.strokeStyle = "rgba(60,50,35,0.45)";
+      ctx2.lineWidth = 0.85;
       ctx2.beginPath();
-      ctx2.moveTo(-11 * u, 2 * u);
-      ctx2.quadraticCurveTo(-11 * u, -4 * u, -4 * u, -5 * u);
-      ctx2.lineTo(6 * u, -4 * u);
-      ctx2.quadraticCurveTo(12 * u, -3 * u, 12 * u, 2 * u);
-      ctx2.closePath();
-      ctx2.fill();
+      ctx2.moveTo(0.4 * u, -1.0 * u);
+      ctx2.lineTo(0.55 * u, 3.2 * u);
       ctx2.stroke();
-      ctx2.fillStyle = "rgba(40,50,70,0.35)";
+      // rocker / lower crease
       ctx2.beginPath();
-      ctx2.moveTo(-2 * u, -4.5 * u);
-      ctx2.lineTo(5 * u, -4 * u);
-      ctx2.lineTo(5 * u, -1 * u);
-      ctx2.lineTo(-3 * u, -1 * u);
-      ctx2.closePath();
+      ctx2.moveTo(-10.5 * u, 2.55 * u);
+      ctx2.quadraticCurveTo(0, 2.9 * u, 10.2 * u, 2.55 * u);
+      ctx2.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx2.stroke();
+
+      // front LED light bar (nose, facing +x drive direction ≈ right)
+      ctx2.fillStyle = "#e8f4ff";
+      ctx2.shadowColor = "rgba(125, 211, 252, 0.95)";
+      ctx2.shadowBlur = 6 * u;
+      roundRectPath(ctx2, 11.0 * u, -0.55 * u, 1.35 * u, 1.5 * u, 0.35 * u);
       ctx2.fill();
+      ctx2.shadowBlur = 0;
+      ctx2.fillStyle = "rgba(56,189,248,0.55)";
+      roundRectPath(ctx2, 11.15 * u, -0.35 * u, 0.9 * u, 1.1 * u, 0.25 * u);
+      ctx2.fill();
+
+      // rear LED light bar
+      ctx2.fillStyle = "#fecaca";
+      ctx2.shadowColor = "rgba(248, 113, 113, 0.9)";
+      ctx2.shadowBlur = 5 * u;
+      roundRectPath(ctx2, -12.35 * u, -0.45 * u, 1.15 * u, 1.35 * u, 0.3 * u);
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+      ctx2.fillStyle = "rgba(239,68,68,0.65)";
+      roundRectPath(ctx2, -12.15 * u, -0.25 * u, 0.75 * u, 0.95 * u, 0.2 * u);
+      ctx2.fill();
+
+      // subtle side light strip under glass
+      ctx2.fillStyle = "rgba(253, 230, 138, 0.35)";
+      roundRectPath(ctx2, -3.5 * u, -0.15 * u, 8 * u, 0.35 * u, 0.15 * u);
+      ctx2.fill();
+
+      drawWheel(ctx2, -6.2 * u, 3.35 * u, 2.75 * u, 8);
+      drawWheel(ctx2, 6.4 * u, 3.35 * u, 2.75 * u, 8);
+      return;
     }
 
-    ctx2.fillStyle = "#1a1a1a";
+    if (body === "suv") {
+      ctx2.fillStyle = c.color;
+      ctx2.strokeStyle = c.accent;
+      roundRectPath(ctx2, -11.5 * u, -7 * u, 23 * u, 10.5 * u, 2.2 * u);
+      ctx2.fill();
+      ctx2.stroke();
+      // roof rails
+      ctx2.strokeStyle = "rgba(0,0,0,0.35)";
+      ctx2.lineWidth = 1;
+      ctx2.beginPath();
+      ctx2.moveTo(-5 * u, -7.2 * u);
+      ctx2.lineTo(5.5 * u, -7.2 * u);
+      ctx2.stroke();
+      ctx2.fillStyle = "rgba(30,45,60,0.55)";
+      roundRectPath(ctx2, -6.5 * u, -10.2 * u, 13 * u, 5.2 * u, 1.6 * u);
+      ctx2.fill();
+      // window split
+      ctx2.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx2.beginPath();
+      ctx2.moveTo(0.2 * u, -10 * u);
+      ctx2.lineTo(0.2 * u, -5.2 * u);
+      ctx2.stroke();
+      // headlights
+      ctx2.fillStyle = "#fef9c3";
+      roundRectPath(ctx2, 10.2 * u, -2.2 * u, 1.5 * u, 1.6 * u, 0.3 * u);
+      ctx2.fill();
+      ctx2.fillStyle = "#fca5a5";
+      roundRectPath(ctx2, -12.2 * u, -1.8 * u, 1.2 * u, 1.3 * u, 0.25 * u);
+      ctx2.fill();
+      // door lines
+      ctx2.strokeStyle = "rgba(0,0,0,0.25)";
+      ctx2.beginPath();
+      ctx2.moveTo(-2 * u, -6.5 * u);
+      ctx2.lineTo(-2 * u, 3 * u);
+      ctx2.moveTo(4 * u, -6.5 * u);
+      ctx2.lineTo(4 * u, 3 * u);
+      ctx2.stroke();
+      drawWheel(ctx2, -6.5 * u, 3.5 * u, 2.9 * u, 6);
+      drawWheel(ctx2, 6.8 * u, 3.5 * u, 2.9 * u, 6);
+      return;
+    }
+
+    if (body === "sports") {
+      ctx2.fillStyle = c.color;
+      ctx2.strokeStyle = c.accent;
+      ctx2.beginPath();
+      ctx2.moveTo(-12.5 * u, 2.2 * u);
+      ctx2.lineTo(-11 * u, -2.8 * u);
+      ctx2.quadraticCurveTo(-4 * u, -5.5 * u, 2 * u, -5.2 * u);
+      ctx2.lineTo(11.5 * u, -1.5 * u);
+      ctx2.quadraticCurveTo(13 * u, 0.5 * u, 12 * u, 3 * u);
+      ctx2.lineTo(-11 * u, 3.2 * u);
+      ctx2.closePath();
+      ctx2.fill();
+      ctx2.stroke();
+      ctx2.fillStyle = "rgba(20,30,50,0.5)";
+      ctx2.beginPath();
+      ctx2.moveTo(-1.5 * u, -4.8 * u);
+      ctx2.lineTo(5 * u, -4.6 * u);
+      ctx2.lineTo(6.5 * u, -1.2 * u);
+      ctx2.lineTo(-2.5 * u, -1.2 * u);
+      ctx2.closePath();
+      ctx2.fill();
+      // side scoop
+      ctx2.fillStyle = "rgba(0,0,0,0.25)";
+      ctx2.beginPath();
+      ctx2.ellipse(1 * u, 0.8 * u, 3.2 * u, 1.1 * u, 0, 0, Math.PI * 2);
+      ctx2.fill();
+      ctx2.fillStyle = "#fef08a";
+      roundRectPath(ctx2, 10.5 * u, -1.2 * u, 1.6 * u, 1.2 * u, 0.3 * u);
+      ctx2.fill();
+      ctx2.fillStyle = "#fb7185";
+      roundRectPath(ctx2, -12.8 * u, -0.6 * u, 1.3 * u, 1.0 * u, 0.25 * u);
+      ctx2.fill();
+      drawWheel(ctx2, -6.2 * u, 3.3 * u, 2.7 * u, 5);
+      drawWheel(ctx2, 6.6 * u, 3.3 * u, 2.7 * u, 5);
+      return;
+    }
+
+    if (body === "kei") {
+      ctx2.fillStyle = c.color;
+      ctx2.strokeStyle = c.accent;
+      roundRectPath(ctx2, -9.5 * u, -6.2 * u, 19 * u, 9.5 * u, 2.8 * u);
+      ctx2.fill();
+      ctx2.stroke();
+      ctx2.fillStyle = "rgba(50,70,95,0.4)";
+      roundRectPath(ctx2, -5.2 * u, -9.4 * u, 10.5 * u, 4.8 * u, 1.6 * u);
+      ctx2.fill();
+      ctx2.strokeStyle = "rgba(0,0,0,0.2)";
+      ctx2.beginPath();
+      ctx2.moveTo(0.2 * u, -9.2 * u);
+      ctx2.lineTo(0.2 * u, -4.8 * u);
+      ctx2.stroke();
+      ctx2.fillStyle = "#fff7ed";
+      roundRectPath(ctx2, 8.2 * u, -2 * u, 1.4 * u, 1.4 * u, 0.35 * u);
+      ctx2.fill();
+      ctx2.fillStyle = "#fda4af";
+      roundRectPath(ctx2, -10.2 * u, -1.6 * u, 1.1 * u, 1.1 * u, 0.25 * u);
+      ctx2.fill();
+      drawWheel(ctx2, -5.5 * u, 3.3 * u, 2.5 * u, 5);
+      drawWheel(ctx2, 5.8 * u, 3.3 * u, 2.5 * u, 5);
+      return;
+    }
+
+    // fallback coupe
+    ctx2.fillStyle = c.color;
+    ctx2.strokeStyle = c.accent;
     ctx2.beginPath();
-    ctx2.arc(-6 * u, 3.2 * u, 2.6 * u, 0, Math.PI * 2);
-    ctx2.arc(6.5 * u, 3.2 * u, 2.6 * u, 0, Math.PI * 2);
+    ctx2.moveTo(-11 * u, 2 * u);
+    ctx2.quadraticCurveTo(-11 * u, -4 * u, -4 * u, -5 * u);
+    ctx2.lineTo(6 * u, -4 * u);
+    ctx2.quadraticCurveTo(12 * u, -3 * u, 12 * u, 2 * u);
+    ctx2.closePath();
     ctx2.fill();
-    ctx2.fillStyle = "#888";
+    ctx2.stroke();
+    ctx2.fillStyle = "rgba(40,50,70,0.35)";
     ctx2.beginPath();
-    ctx2.arc(-6 * u, 3.2 * u, 1.1 * u, 0, Math.PI * 2);
-    ctx2.arc(6.5 * u, 3.2 * u, 1.1 * u, 0, Math.PI * 2);
+    ctx2.moveTo(-2 * u, -4.5 * u);
+    ctx2.lineTo(5 * u, -4 * u);
+    ctx2.lineTo(5 * u, -1 * u);
+    ctx2.lineTo(-3 * u, -1 * u);
+    ctx2.closePath();
     ctx2.fill();
+    drawWheel(ctx2, -6 * u, 3.2 * u, 2.6 * u, 6);
+    drawWheel(ctx2, 6.5 * u, 3.2 * u, 2.6 * u, 6);
   }
 
   function updateHUD() {
@@ -1092,6 +1415,8 @@
     $("hudDist").textContent = String(Math.round(state.dist));
     $("hudRolls").textContent = state.rolls.toFixed(1);
     if ($("hudScore")) $("hudScore").textContent = String(Math.floor(state.score));
+    if ($("hudMarbles")) $("hudMarbles").textContent = String(state.marbleCount);
+    if ($("lblMarbles")) $("lblMarbles").textContent = st.marbles;
   }
 
   // ---------- Banner ----------
@@ -1124,6 +1449,7 @@
     $("lblDist").textContent = s.dist;
     $("lblRolls").textContent = s.rolls;
     if ($("lblScore")) $("lblScore").textContent = s.score;
+    if ($("lblMarbles")) $("lblMarbles").textContent = s.marbles;
     $("btnStart").textContent = s.start;
     $("btnPickCarFromStart").textContent = s.pickCar;
     $("btnConfirmCar").textContent = s.confirm;
@@ -1200,6 +1526,7 @@
       s.distScore + ": " + r.distScore + " (" + Math.round(r.dist) + " m)<br>" +
       s.timeScore + ": " + r.timeScore + "<br>" +
       s.flipScore + ": " + r.flipBonusTotal + " (" + s.flipsDone + " " + r.flips + ")<br>" +
+      s.marbleScore + ": " + (r.marbleScore || 0) + " (" + (r.marbleCount || 0) + ")<br>" +
       s.rolls + ": " + r.rolls.toFixed(1);
     openOverlay("resultOverlay");
   }
