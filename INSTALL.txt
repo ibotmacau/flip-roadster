@@ -1,0 +1,35 @@
+Flip Roadster — local install / run
+===================================
+
+Requirements
+- Any modern browser (Chrome, Firefox, Safari, Edge)
+- Optional: Python 3 (for a local HTTP server)
+
+Quick start (recommended)
+1. Open a terminal.
+2. cd into this folder (the one that contains index.html).
+3. Run:
+     python3 -m http.server 8080
+4. In your browser open:
+     http://localhost:8080/
+
+Alternate ports
+     python3 -m http.server 5500
+  then open http://localhost:5500/
+
+file:// (also OK)
+- This build uses no ES modules, so you can open index.html
+  directly from disk (File → Open, or double-click).
+- Some browsers still restrict audio until you tap a control;
+  gameplay itself should work.
+
+Mobile
+- Serve over LAN HTTP if you want to test on a phone:
+     python3 -m http.server 8080 --bind 0.0.0.0
+  then visit http://<your-computer-lan-ip>:8080/ on the phone.
+- Use the large on-screen buttons; keyboard is optional.
+
+Stop the server
+- Press Ctrl+C in the terminal.
+
+No npm build is required.

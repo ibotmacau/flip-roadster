@@ -528,3 +528,18 @@ body {
     padding-bottom: 8px;
   }
 }
+
+.score-pill {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.98), rgba(254, 243, 199, 0.98));
+  border: 1px solid #f59e0b;
+  min-width: 100px;
+  font-size: 14px;
+}
+
+.score-pill .label {
+  color: #b45309;
+}
+
+.air-fill.low {
+  background: linear-gradient(90deg, #dc2626, #f97316);
+}

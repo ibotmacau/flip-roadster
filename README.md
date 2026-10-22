@@ -1,58 +1,44 @@
 # Flip Roadster（翻滾敞篷）
 
-A static browser stunt game inspired by the *wall-flip / Flip Roadster* spirit: drive a roadster up a night track that rises into a vertical wall and curls into an inverted ceiling, stick to stay on, thruster-roll in the air, and land on your wheels.
+Infinite side-view stunt runner: drive right, lift over ground hazards, dodge sky beams, flip for bonus points, survive for a high score.
 
-**Not affiliated with the original.** No original assets or verbatim copy; clone the *feel*, not the IP.
+**Not affiliated with any original wall-flip title.** No original assets or verbatim copy.
 
 ## Features
 
-- Canvas 2D + vanilla JS (no build step, no modules)
+- Canvas 2D + vanilla JS (no build step, no modules; works over `file://`)
 - Mobile-first on-screen controls + keyboard (`X`, `←`, `→`, `Space`)
-- Shared AIR tank for Stick + thrusters
-- Car picker (4 cars with different mass / accel / air / roll)
-- Language switcher: **繁** (default) | **EN**
-- Mute toggle (simple beeps)
-- Header menu: how-to / pick car / reset
-
-## Cars
-
-| Car | Color | Notes |
-|-----|-------|--------|
-| Roadster / 敞篷跑車 | Silver | Balanced |
-| SUV / 越野休旅 | Green | Heavier, more air, slower |
-| Sports / 超跑 | Red | Faster, less stick, less air |
-| Kei / 輕自動車 | Cream | Light, stronger roll torque |
+- Multi-touch: all four buttons can be held at once (pointer capture)
+- AIR / energy tank: Stick (lift) + thrusters spend air; regenerates idle (faster on ground)
+- Ground obstacles (pillars, barriers, walls) and air obstacles (blocks, beams)
+- Scoring: distance + survival time + **+500 per full aerial flip (2π)**
+- Normal landing continues the run — crash only on obstacles / severe roll / fall-off
+- Car picker (4 cars) · 繁｜EN · mute · menu
 
 ## Controls
 
 | Action | Button | Key |
 |--------|--------|-----|
-| Stick | 吸附 / Stick | `X` |
+| Lift / Stick | 吸附 | `X` |
 | Left thruster | 左推進 | `←` |
 | Right thruster | 右推進 | `→` |
-| Drive | 前進 / Drive | `Space` |
+| Drive | 前進 | `Space` |
 
-Both thrusters push “up” relative to car orientation. One thruster alone applies roll torque.
-
-## Run
-
-See `INSTALL.txt`. Prefer `python3 -m http.server` from this folder (also works over `file://`).
+One thruster rolls; both push “up” relative to the car. Stick lifts you off the ground / boosts altitude.
 
 ## Scoring
 
-Rolls + landing quality (tilt & impact). One clean roll is solid; two or more can go beyond “perfect.”
+- Distance × rate + alive time × rate
+- Each completed aerial revolution (2π) → **+500** (banner)
+- Result screen shows total + breakdown
+- Mode: **high score until wipeout**
 
-## Physics limitations (vs a polished original)
+## Run
 
-- Track is a 2D polyline with sampled normals — not a full rigid-body contact solver
-- Stick is a binary cling on overhang segments, not tire friction simulation
-- Landing uses tilt + vertical speed thresholds, not detailed suspension
-- Underside collisions are approximate nearest-segment checks
-- Camera is a soft follow; no cinematic replay
+See `INSTALL.txt`. Prefer `python3 -m http.server` from this folder.
 
 ## Files
 
 - `index.html` — shell, HUD, modals
 - `style.css` — mobile-first chrome
-- `game.js` — track, physics, render, i18n
-- `INSTALL.txt` — local run steps
+- `game.js` — physics, obstacles, score, render, i18n

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#e8e8e8" />
-  <meta name="description" content="Flip Roadster — climb the wall, stick, roll, land. Free browser stunt game." />
+  <meta name="description" content="Flip Roadster — side-view stunt runner. Jump obstacles, flip for bonus, survive for high score." />
   <title>翻滾敞篷｜免費瀏覽器遊戲</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -48,8 +48,9 @@
             <p class="speed-line"><span id="lblSpeed">時速</span><strong id="hudSpeed">0</strong> km/h</p>
           </div>
           <div class="hud-tr">
-            <div class="stat-pill"><span class="label" id="lblHeight">高度</span><span id="hudHeight">0.0</span> m</div>
+            <div class="stat-pill score-pill"><span class="label" id="lblScore">分數</span><span id="hudScore">0</span></div>
             <div class="stat-pill"><span class="label" id="lblDist">距離</span><span id="hudDist">0</span> m</div>
+            <div class="stat-pill"><span class="label" id="lblHeight">高度</span><span id="hudHeight">0.0</span> m</div>
             <div class="stat-pill"><span class="label" id="lblRolls">旋轉</span><span id="hudRolls">0</span></div>
           </div>
         </div>
@@ -78,19 +79,17 @@
     </main>
   </div>
 
-  <!-- Start / How-to -->
   <div class="overlay" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
     <div class="modal">
       <h2 id="startTitle">翻滾敞篷</h2>
       <ol class="howto-list" id="howtoList">
-        <li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
       </ol>
       <button type="button" class="primary-btn secondary" id="btnPickCarFromStart">選擇車輛</button>
       <button type="button" class="primary-btn" id="btnStart">開始</button>
     </div>
   </div>
 
-  <!-- Car picker -->
   <div class="overlay" id="carOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="carTitle">
     <div class="modal">
       <h2 id="carTitle">選擇車輛</h2>
@@ -99,7 +98,6 @@
     </div>
   </div>
 
-  <!-- Hamburger menu -->
   <div class="overlay" id="menuOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="menuTitle">
     <div class="modal">
       <h2 id="menuTitle">選單</h2>
@@ -112,7 +110,6 @@
     </div>
   </div>
 
-  <!-- Result -->
   <div class="overlay" id="resultOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
     <div class="modal">
       <h2 id="resultTitle">着地成功!!</h2>
