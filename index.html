@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#e8e8e8" />
-  <meta name="description" content="Flip Roadster — side-view stunt runner. Jump obstacles, flip for bonus, survive for high score." />
+  <meta name="description" content="Flip Roadster — side-view stunt runner. Climb, stick, flip into the night sky, survive for high score." />
   <title>翻滾敞篷｜免費瀏覽器遊戲</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -59,20 +59,20 @@
       </div>
 
       <div class="controls" role="group" aria-label="Game controls">
+        <button type="button" class="ctrl-btn btn-lift" id="btnLift" data-action="lift" aria-pressed="false">
+          <span class="lbl" id="lblLift">升</span>
+          <span class="key">Z</span>
+        </button>
         <button type="button" class="ctrl-btn btn-stick" id="btnStick" data-action="stick" aria-pressed="false">
-          <span class="lbl" id="lblStick">吸附</span>
+          <span class="lbl" id="lblStick">吸</span>
           <span class="key">X</span>
         </button>
-        <button type="button" class="ctrl-btn btn-left" id="btnLeft" data-action="left" aria-pressed="false">
-          <span class="lbl" id="lblLeft">左推進</span>
-          <span class="key">←</span>
-        </button>
-        <button type="button" class="ctrl-btn btn-right" id="btnRight" data-action="right" aria-pressed="false">
-          <span class="lbl" id="lblRight">右推進</span>
-          <span class="key">→</span>
+        <button type="button" class="ctrl-btn btn-flip" id="btnFlip" data-action="flip" aria-pressed="false">
+          <span class="lbl" id="lblFlip">翻</span>
+          <span class="key">← / C</span>
         </button>
         <button type="button" class="ctrl-btn btn-drive" id="btnDrive" data-action="drive" aria-pressed="false">
-          <span class="lbl" id="lblDrive">前進</span>
+          <span class="lbl" id="lblDrive">前</span>
           <span class="key">Space</span>
         </button>
       </div>

@@ -7,8 +7,9 @@
   --muted: #666;
   --accent: #2b6cff;
   --green: #22c55e;
+  --btn-lift: #3b82f6;
   --btn-stick: #fff;
-  --btn-thrust: #3b82f6;
+  --btn-flip: #a855f7;
   --btn-drive: #22c55e;
   --radius: 12px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -379,19 +380,24 @@ body {
   margin-top: 2px;
 }
 
+.btn-lift {
+  background: var(--btn-lift);
+  color: #fff;
+}
+
 .btn-stick {
   background: #fff;
   color: #1a1a1a;
-  border: 2px solid var(--accent);
+  border: 2px solid #0ea5e9;
 }
 
 .btn-stick.is-down {
-  background: #dbeafe;
+  background: #e0f2fe;
 }
 
-.btn-left,
-.btn-right {
-  background: var(--btn-thrust);
+.btn-flip {
+  background: var(--btn-flip);
+  color: #fff;
 }
 
 .btn-drive {

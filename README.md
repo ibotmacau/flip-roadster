@@ -1,30 +1,31 @@
 # Flip Roadster（翻滾敞篷）
 
-Infinite side-view stunt runner: drive right, lift over ground hazards, dodge sky beams, flip for bonus points, survive for a high score.
+Infinite side-view stunt runner: climb the launch wall, stick the lip, flip in the night sky, then survive the obstacle run for a high score.
 
 **Not affiliated with any original wall-flip title.** No original assets or verbatim copy.
 
 ## Features
 
 - Canvas 2D + vanilla JS (no build step, no modules; works over `file://`)
-- Mobile-first on-screen controls + keyboard (`X`, `←`, `→`, `Space`)
+- Mobile-first on-screen controls + keyboard (`Z`, `X`, `←`/`C`, `Space`)
 - Multi-touch: all four buttons can be held at once (pointer capture)
-- AIR / energy tank: Stick (lift) + thrusters spend air; regenerates idle (faster on ground)
+- Opening launch track: **flat → wall climb → reverse lip → night sky**
+- AIR / energy tank: Lift + Stick + Flip spend air; regenerates idle (faster on ground)
 - Ground obstacles (pillars, barriers, walls) and air obstacles (blocks, beams)
 - Scoring: distance + survival time + **+500 per full aerial flip (2π)**
-- Normal landing continues the run — crash only on obstacles / severe roll / fall-off
+- Wheels-down landing continues the run — crash only on obstacles / severe roll / fall-off
 - Car picker (4 cars) · 繁｜EN · mute · menu
 
 ## Controls
 
-| Action | Button | Key |
-|--------|--------|-----|
-| Lift / Stick | 吸附 | `X` |
-| Left thruster | 左推進 | `←` |
-| Right thruster | 右推進 | `→` |
-| Drive | 前進 | `Space` |
+| Action | Button | Key | Role |
+|--------|--------|-----|------|
+| Lift | 升 | `Z` | Rise / altitude; burns air |
+| Stick | 吸 | `X` | Wall / lip adhesion (hold or peel off); burns air |
+| Flip | 翻 | `←` or `C` | Continuous aerial roll; burns air. Lift+Flip = roof thrust soft-land |
+| Drive | 前 | `Space` | Forward accelerate |
 
-One thruster rolls; both push “up” relative to the car. Stick lifts you off the ground / boosts altitude.
+Starfield = flip / airborne scene. Stick is wall mechanics only — unrelated to the stars.
 
 ## Scoring
 
@@ -41,4 +42,4 @@ See `INSTALL.txt`. Prefer `python3 -m http.server` from this folder.
 
 - `index.html` — shell, HUD, modals
 - `style.css` — mobile-first chrome
-- `game.js` — physics, obstacles, score, render, i18n
+- `game.js` — physics, launch track, obstacles, score, render, i18n
